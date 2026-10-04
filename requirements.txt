@@ -1,0 +1,5 @@
+ipykernel
+python-dotenv
+litellm
+langchain
+langgraph

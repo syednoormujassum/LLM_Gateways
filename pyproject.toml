@@ -1,0 +1,13 @@
+[project]
+name = "llm-gateways"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "ipykernel>=7.4.0",
+    "langchain>=1.4.3",
+    "langgraph>=1.2.12",
+    "litellm>=1.104.0",
+    "python-dotenv>=1.2.4",
+]
