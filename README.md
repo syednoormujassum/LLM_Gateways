@@ -4,6 +4,37 @@ Experiment with a unified LLM gateway using [LiteLLM](https://github.com/BerriAI
 
 Call multiple providers (OpenAI, Groq, and others supported by LiteLLM) through one interface — useful for routing, fallbacks, and cost-aware model selection.
 
+## Workflow
+
+How the current smoke tests in `test.ipynb` reach a provider:
+
+```mermaid
+flowchart TD
+  A[Start: test.ipynb] --> B[Load .env with python-dotenv]
+  B --> C{OPENAI_API and GROQ_API set?}
+  C -->|No| D[Print error and exit]
+  C -->|Yes| E[Map keys for LiteLLM]
+  E --> F["OPENAI_API → OPENAI_API_KEY"]
+  E --> G["GROQ_API → GROQ_API_KEY"]
+  F --> H["litellm.completion(model, messages)"]
+  G --> H
+  H --> I{Model prefix}
+  I -->|gpt-4o-mini| J[OpenAI]
+  I -->|groq/...| K[Groq]
+  J --> L[Return completion text]
+  K --> L
+```
+
+Intended gateway shape (LiteLLM as the single call surface; LangChain / LangGraph optional on top):
+
+```mermaid
+flowchart LR
+  App[App / notebook / LangGraph] --> GW[LiteLLM gateway]
+  GW --> OA[OpenAI]
+  GW --> GQ[Groq]
+  GW --> Other[Other LiteLLM providers]
+```
+
 ## Current status
 
 Early setup and provider smoke tests:
